@@ -1,6 +1,7 @@
 "use strict";
 
-const path = require('path'),
+const os = require('os'),
+	  path = require('path'),
 	  fs = require('fs-extra'),
 	  _ = require('lodash');
 
@@ -9,7 +10,18 @@ function pluginUtils() {
 	this.pluginName = "";
 	this.cacheMode = true;
 	this.config = null; // cache config
+
+	this.isWindows = (os.type() === "Windows_NT");
+
+	this.globalNodeModules = this.isWindows ? 
+	  				  path.join(process.config.variables.node_prefix + "/node_modules")
+	  				: path.join(process.config.variables.node_prefix + "/lib/node_modules");
 }
+
+pluginUtils.prototype.addRequirePath = function(requirePath, targetPath) {
+	var targetPath = targetPath || require.main.paths;
+	targetPath.push(requirePath);
+};
 
 /**
  * [Create config file]

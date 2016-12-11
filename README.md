@@ -20,6 +20,21 @@ For usage details, you can take a look at test folder.
 	- Default: null,
 	- config cache
 
+- isWindows
+	- Boolean
+	- whether the os system is windows or not
+
+- globalNodeModules
+	- String
+	- global node module path based on os system
+
+- addRequirePath
+	- Function
+	- add require search path
+	- Parameters
+	- `requirePath`, new search path you wanna add
+	- `targetPath`, target path you wanna add into, default: `require.main.paths`
+
 - createConfig
 	- Function
 	- create config
