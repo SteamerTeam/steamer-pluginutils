@@ -1,0 +1,29 @@
+{
+  "name": "steamer-pluginutils",
+  "version": "0.0.1",
+  "description": "steamer-pluginutils",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SteamerTeam/steamer-pluginutils.git"
+  },
+  "keywords": [
+    "steamer"
+  ],
+  "author": "SteamerTeam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SteamerTeam/steamer-pluginutils/issues"
+  },
+  "homepage": "https://github.com/SteamerTeam/steamer-pluginutils#readme",
+  "dependencies": {
+    "colors": "^1.1.2",
+    "fs-extra": "^1.0.0",
+    "lodash": "^4.17.2"
+  },
+  "devDependencies": {
+    "gulp": "gulpjs/gulp#4.0",
+    "steamer-cli": "*"
+  }
+}
