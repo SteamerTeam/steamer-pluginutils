@@ -70,7 +70,7 @@ pluginUtils.prototype.readConfig = function(folder, isJs) {
 		configFile = path.resolve(path.join(folder, ".steamer/" + this.pluginName + "." + fileExt));
 
 	if (!fs.existsSync(configFile)) {
-		throw new Error(configFile +  "not exists");
+		throw new Error(configFile +  " not exists");
 	}
 
 	if (this.config && this.cacheMode) {
