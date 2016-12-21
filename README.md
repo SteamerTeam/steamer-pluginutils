@@ -1,5 +1,5 @@
 ### steamer-pluginutils
-utils for steamer plugin
+utils for steamerjs plugin
 
 #### Api
 
