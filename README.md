@@ -63,3 +63,16 @@ For usage details, you can take a look at test folder.
 	- Return 
 		- `config`, config object
 
+
+#### For Development
+```
+// for correct the code format
+npm i -g eslint
+
+npm run lint
+
+// for testing
+npm i -g jasmine
+
+npm test
+```
