@@ -29,7 +29,6 @@
     "lodash": "^4.17.2"
   },
   "devDependencies": {
-    "gulp": "gulpjs/gulp#4.0",
-    "steamer-cli": "*"
+    
   }
 }
