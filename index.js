@@ -3,7 +3,8 @@
 const os = require('os'),
 	  path = require('path'),
 	  fs = require('fs-extra'),
-	  _ = require('lodash');
+	  _ = require('lodash'),
+	  colors = require('colors');
 
 
 function pluginUtils() {
@@ -54,6 +55,8 @@ pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce, tar
 
 	fs.ensureFileSync(configFile);
 	fs.writeFileSync(configFile, content, 'utf-8');
+
+	this.success(configFile + " is created");
 
 	this.config = null;
 };
@@ -115,7 +118,7 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 
 	try {
 		let config = require(configFile) || {};
-		return config
+		return config.config
 	}
 	catch(e) {
 		console.log(e.stack);
@@ -123,6 +126,22 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 
 	return {};
 	
+};
+
+pluginUtils.prototype.error = function(str) {
+	console.log(str['red']);
+};
+
+pluginUtils.prototype.info = function(str) {
+	console.log(str['cyan']);
+};
+
+pluginUtils.prototype.warn = function(str) {
+	console.log(str['yellow']);
+};
+
+pluginUtils.prototype.success = function(str) {
+	console.log(str['green']);
 };
 
 module.exports = pluginUtils;

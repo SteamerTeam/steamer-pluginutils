@@ -1,9 +1,15 @@
 {
   "name": "steamer-pluginutils",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "steamer-pluginutils",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "lint": "eslint index.js",
+    "test": "npm run lint&&jasmine"
+  },
+  "eslintConfig": {
+    "extends": "./config/eslint-config.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SteamerTeam/steamer-pluginutils.git"
