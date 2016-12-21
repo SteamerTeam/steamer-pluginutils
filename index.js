@@ -29,22 +29,24 @@ pluginUtils.prototype.addRequirePath = function(requirePath, targetPath) {
  * @param  {Object}  config  [config object]
  * @param  {Boolean} isJs  [config file format json or js]
  * @param  {Boolean} isForce [is force to overwrite]
+ * @param  {String}  targetName  [target file name]
  */
-pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce) {
+pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce, targetName) {
 
 	var folder = folder || "",
 		config = config || "",
 		isJs = isJs || false,
-		isForce = isForce || false;
+		isForce = isForce || false,
+		targetName = targetName || this.pluginName;
 
 	let fileExt = (isJs) ? "js" : "json",
 		newConfig = {
-			plugin: this.pluginName,
+			plugin: targetName,
 			config: config,
 		},
 		contentPrefix = (isJs) ? "module.exports = " : "",
 		content = contentPrefix + JSON.stringify(newConfig, null, 4),
-		configFile = path.resolve(path.join(folder, ".steamer/" + this.pluginName + "." + fileExt));
+		configFile = path.resolve(path.join(folder, ".steamer/" + targetName + "." + fileExt));
 
 	if (!isForce && fs.existsSync(configFile)) {
 		throw new Error(configFile +  " exists");
@@ -60,14 +62,16 @@ pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce) {
  * [read config file]
  * @param  {String}  folder [children folder relative to current folder]
  * @param  {Boolean} isJs [config file format json or js]
+ * @param  {String}  targetName  [target file name]
  * @return {Object}         [config object]
  */
-pluginUtils.prototype.readConfig = function(folder, isJs) {
+pluginUtils.prototype.readConfig = function(folder, isJs, targetName) {
 	var folder = folder || "",
-		isJs = isJs || false;
+		isJs = isJs || false,
+		targetName = targetName || this.pluginName;
 
 	let fileExt = (isJs) ? "js" : "json",
-		configFile = path.resolve(path.join(folder, ".steamer/" + this.pluginName + "." + fileExt));
+		configFile = path.resolve(path.join(folder, ".steamer/" + targetName + "." + fileExt));
 
 	if (!fs.existsSync(configFile)) {
 		throw new Error(configFile +  " not exists");
@@ -94,5 +98,31 @@ pluginUtils.prototype.readConfig = function(folder, isJs) {
 	}
 };
 
+/**
+ * [read steamerjs global / local config]
+ * @param  {Boolean} isGlobal [is the config global or local]
+ * @return {Object}           [steamer config]
+ */
+pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
+	var isGlobal = isGlobal || false,
+		configFileName = ".steamer/steamer.js",
+		configFile = isGlobal ? path.join(this.globalNodeModules, "steamerjs", configFileName) : path.resolve(configFileName);
+
+
+	if (!fs.existsSync(configFile)) {
+		throw new Error(configFile +  " not exists");
+	}
+
+	try {
+		let config = require(configFile) || {};
+		return config
+	}
+	catch(e) {
+		console.log(e.stack);
+	}
+
+	return {};
+	
+};
 
 module.exports = pluginUtils;

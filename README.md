@@ -43,6 +43,7 @@ For usage details, you can take a look at test folder.
 		- `config`, config object, default: `{}`
 		- `isJs`, config file format json or js, default: `false`
 		- `isForce`, is force to overwrite, default: `false`
+		- `targetName`, target file name, default will the the value of `this.pluginName`
 
 - readConfig
 	- Function
@@ -50,6 +51,15 @@ For usage details, you can take a look at test folder.
 	- Parameters
 		- `folder`, children folder relative to current folder, default: `""`
  		- `isJs`, config file format json or js, default: `false`
+ 		- `targetName`, target file name, default will the the value of `this.pluginName`
  	- Return
  		- `config`, config object
+
+- readSteamerConfig
+	- Function
+	- read steamerjs global or local config
+	- Parameters
+		- `isGlobal`, is the config global or local, default: `false`
+	- Return 
+		- `config`, config object
 
