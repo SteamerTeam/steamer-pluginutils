@@ -56,8 +56,6 @@ pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce, tar
 	fs.ensureFileSync(configFile);
 	fs.writeFileSync(configFile, content, 'utf-8');
 
-	this.success(configFile + " is created");
-
 	this.config = null;
 };
 
