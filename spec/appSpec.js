@@ -123,3 +123,21 @@ describe("readSteamerConfig test1", function() {
     	expect(JSON.stringify(conf)).toEqual(JSON.stringify(resultConf));
   	});
 });
+
+describe("read and write package.json", function() {
+	it("about package.json", function() {
+		var utils = new pluginUtils();
+
+		var config = utils.readPkgJson(path.resolve("../result/source.json"));
+
+		config.version = "1.5.0";
+
+		utils.writePkgJson(path.resolve("../result/target.json"), config);	
+		
+		var resultConfig = utils.readPkgJson(path.resolve("../result/result.json"));
+
+		var targetConfig = 	utils.readPkgJson(path.resolve("../result/target.json"));
+
+		expect(JSON.stringify(resultConfig)).toEqual(JSON.stringify(targetConfig));
+  	});
+});

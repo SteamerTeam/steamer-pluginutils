@@ -126,6 +126,41 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 	
 };
 
+/**
+ * [read package.json]
+ * @param  {String} pkgjson [path of the package.json]
+ * @return {Object}         [content]
+ */
+pluginUtils.prototype.readPkgJson = function(pkgjson) {
+	var config = null;
+
+	try {
+		config = JSON.parse(fs.readFileSync(pkgjson, "utf-8")) || {};
+	}
+	catch(e) {
+		console.log(e.stack);
+	}
+
+	return config;
+};
+
+/**
+ * [write package.json]
+ * @param  {String} pkgjson [path of the package.json]
+ * @param  {Object} content
+ */
+pluginUtils.prototype.writePkgJson = function(pkgjson, content) {
+	try {
+		content = JSON.stringify(content, null, 4);
+
+		fs.ensureFileSync(pkgjson);
+		fs.writeFileSync(pkgjson, content, 'utf-8');
+	}
+	catch(e) {
+		console.log(e.stack);
+	}
+};
+
 pluginUtils.prototype.error = function(str) {
 	console.log(str['red']);
 };

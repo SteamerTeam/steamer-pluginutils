@@ -1,6 +1,6 @@
 {
   "name": "steamer-pluginutils",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "steamer-pluginutils",
   "main": "index.js",
   "scripts": {

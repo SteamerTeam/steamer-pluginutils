@@ -63,6 +63,21 @@ For usage details, you can take a look at test folder.
 	- Return 
 		- `config`, config object
 
+- readPkgJson
+	- Function
+	- read package.json
+	- Parameters
+		- `pkgjson`, path of the package.json
+	- Return 
+		- `config`, content
+
+- writePkgJson
+	- Function
+	- read package.json
+	- Parameters
+		- `pkgjson`, path of the package.json
+		- `content`
+
 
 #### For Development
 ```
