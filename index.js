@@ -2,9 +2,7 @@
 
 const os = require('os'),
 	  path = require('path'),
-	  fs = require('fs-extra'),
-	  _ = require('lodash'),
-	  colors = require('colors');
+	  fs = require('fs-extra');
 
 
 function pluginUtils() {
@@ -116,7 +114,7 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 
 	try {
 		let config = require(configFile) || {};
-		return config.config
+		return config.config;
 	}
 	catch(e) {
 		console.log(e.stack);
