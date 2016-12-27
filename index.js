@@ -72,9 +72,10 @@ pluginUtils.prototype.readConfig = function(folder, isJs, targetName) {
 	let fileExt = (isJs) ? "js" : "json",
 		configFile = path.resolve(path.join(folder, ".steamer/" + targetName + "." + fileExt));
 
-	// if (!fs.existsSync(configFile)) {
+	if (!fs.existsSync(configFile)) {
+		return this.config;
 	// 	throw new Error(configFile +  " not exists");
-	// }
+	}
 
 	if (this.config && this.cacheMode) {
 		return this.config;
@@ -108,9 +109,10 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 		configFile = isGlobal ? path.join(this.globalNodeModules, "steamerjs", configFileName) : path.resolve(configFileName);
 
 
-	// if (!fs.existsSync(configFile)) {
+	if (!fs.existsSync(configFile)) {
+		return {};
 	// 	throw new Error(configFile +  " not exists");
-	// }
+	}
 
 	try {
 		let config = require(configFile) || {};
