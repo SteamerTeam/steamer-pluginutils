@@ -1,7 +1,7 @@
-### steamer-pluginutils
+## steamer-pluginutils
 utils for steamerjs plugin
 
-#### Api
+### Api
 
 For usage details, you can take a look at test folder. 
 
@@ -26,7 +26,7 @@ For usage details, you can take a look at test folder.
 
 - globalNodeModules
 	- String
-	- global node module path based on os system
+	- global node module path based on os system, a wrapper for `process.env.NODE_PATH`
 
 - addRequirePath
 	- Function
@@ -79,7 +79,7 @@ For usage details, you can take a look at test folder.
 		- `content`
 
 
-#### For Development
+### For Development
 ```
 // for correct the code format
 npm i -g eslint
@@ -91,3 +91,6 @@ npm i -g jasmine
 
 npm test
 ```
+
+## Changelog
+v1.0.5 change globalNodeModules path

@@ -12,9 +12,7 @@ function pluginUtils() {
 
 	this.isWindows = (os.type() === "Windows_NT");
 
-	this.globalNodeModules = this.isWindows ? 
-	  				  path.join(process.config.variables.node_prefix + "/node_modules")
-	  				: path.join(process.config.variables.node_prefix + "/lib/node_modules");
+	this.globalNodeModules = path.join(process.env.NODE_PATH);
 }
 
 pluginUtils.prototype.addRequirePath = function(requirePath, targetPath) {
