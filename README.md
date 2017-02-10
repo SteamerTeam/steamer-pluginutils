@@ -93,4 +93,4 @@ npm test
 ```
 
 ## Changelog
-v1.0.5 change globalNodeModules path
+* v1.0.5 change globalNodeModules path
