@@ -2,7 +2,8 @@
 
 const os = require('os'),
 	  path = require('path'),
-	  fs = require('fs-extra');
+	  fs = require('fs-extra'),
+	  colors = require('colors');
 
 
 function pluginUtils() {
