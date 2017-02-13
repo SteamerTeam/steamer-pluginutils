@@ -78,6 +78,22 @@ For usage details, you can take a look at test folder.
 		- `pkgjson`, path of the package.json
 		- `content`
 
+- error
+	- Function
+	- print message in red
+
+- info
+	- Function
+	- print message in cyan
+
+- warn
+	- Function
+	- print message in yellow
+
+- success
+	- Function
+	- print message in green
+
 
 ### For Development
 ```
