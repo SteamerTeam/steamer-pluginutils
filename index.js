@@ -47,12 +47,17 @@ pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce, tar
 		content = contentPrefix + JSON.stringify(newConfig, null, 4),
 		configFile = path.resolve(path.join(folder, ".steamer/" + targetName + "." + fileExt));
 
-	if (!isForce && fs.existsSync(configFile)) {
-		throw new Error(configFile +  " exists");
-	}
+	try {
+		if (!isForce && fs.existsSync(configFile)) {
+			throw new Error(configFile +  " exists");
+		}
 
-	fs.ensureFileSync(configFile);
-	fs.writeFileSync(configFile, content, 'utf-8');
+		fs.ensureFileSync(configFile);
+		fs.writeFileSync(configFile, content, 'utf-8');
+	}
+	catch(e) {
+		this.error(e.stack);
+	}
 
 	this.config = null;
 };
@@ -74,7 +79,6 @@ pluginUtils.prototype.readConfig = function(folder, isJs, targetName) {
 
 	if (!fs.existsSync(configFile)) {
 		return this.config;
-	// 	throw new Error(configFile +  " not exists");
 	}
 
 	if (this.config && this.cacheMode) {
@@ -94,7 +98,7 @@ pluginUtils.prototype.readConfig = function(folder, isJs, targetName) {
 		return this.config;
 	}
 	catch(e) {
-		console.log(e.stack);
+		this.error(e.stack);
 	}
 };
 
@@ -111,7 +115,6 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 
 	if (!fs.existsSync(configFile)) {
 		return {};
-	// 	throw new Error(configFile +  " not exists");
 	}
 
 	try {
@@ -119,7 +122,7 @@ pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
 		return config.config;
 	}
 	catch(e) {
-		console.log(e.stack);
+		this.error(e.stack);
 	}
 
 	return {};
@@ -138,7 +141,7 @@ pluginUtils.prototype.readPkgJson = function(pkgjson) {
 		config = JSON.parse(fs.readFileSync(pkgjson, "utf-8")) || {};
 	}
 	catch(e) {
-		console.log(e.stack);
+		this.error(e.stack);
 	}
 
 	return config;
@@ -157,7 +160,7 @@ pluginUtils.prototype.writePkgJson = function(pkgjson, content) {
 		fs.writeFileSync(pkgjson, content, 'utf-8');
 	}
 	catch(e) {
-		console.log(e.stack);
+		this.error(e.stack);
 	}
 };
 
