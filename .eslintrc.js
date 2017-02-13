@@ -10,6 +10,7 @@ module.exports = {
     	"indent": [2, 'tab', {SwitchCase: 1, VariableDeclarator: 1}],
     	"no-console": 0,
         "no-redeclare": 1,
+        "no-unused-vars": 1,
     	"one-var-declaration-per-line": [2, "always"],
     	"no-mixed-spaces-and-tabs": 0,
     	"semi": 2,

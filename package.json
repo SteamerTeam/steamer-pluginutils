@@ -1,14 +1,11 @@
 {
   "name": "steamer-pluginutils",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "steamer-pluginutils",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
     "test": "npm run lint&&jasmine"
-  },
-  "eslintConfig": {
-    "extends": "./config/eslint-config.js"
   },
   "repository": {
     "type": "git",
@@ -25,10 +22,9 @@
   "homepage": "https://github.com/SteamerTeam/steamer-pluginutils#readme",
   "dependencies": {
     "colors": "^1.1.2",
-    "fs-extra": "^1.0.0",
-    "lodash": "^4.17.2"
+    "fs-extra": "^2.0.0",
+    "klaw": "^1.3.1",
+    "lodash": "^4.17.4"
   },
-  "devDependencies": {
-    
-  }
+  "devDependencies": {}
 }

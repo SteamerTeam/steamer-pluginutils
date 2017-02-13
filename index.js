@@ -3,7 +3,8 @@
 const os = require('os'),
 	  path = require('path'),
 	  fs = require('fs-extra'),
-	  colors = require('colors');
+	  colors = require('colors'),
+	  _ = require('lodash');
 
 
 function pluginUtils() {
@@ -161,19 +162,25 @@ pluginUtils.prototype.writePkgJson = function(pkgjson, content) {
 };
 
 pluginUtils.prototype.error = function(str) {
-	console.log(str['red']);
+	this._printMessage(str, 'red');
 };
 
 pluginUtils.prototype.info = function(str) {
-	console.log(str['cyan']);
+	this._printMessage(str, 'cyan');
 };
 
 pluginUtils.prototype.warn = function(str) {
-	console.log(str['yellow']);
+	this._printMessage(str, 'yellow');
 };
 
 pluginUtils.prototype.success = function(str) {
-	console.log(str['green']);
+	this._printMessage(str, 'green');
+};
+
+pluginUtils.prototype._printMessage = function(str, color) {
+	str = str || '';
+	str = _.isObject(str) ? JSON.stringify(str) : str;
+	console.log(str[color]);
 };
 
 module.exports = pluginUtils;
