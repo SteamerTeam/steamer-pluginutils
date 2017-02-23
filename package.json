@@ -1,7 +1,7 @@
 {
   "name": "steamer-pluginutils",
   "version": "1.0.8",
-  "description": "steamer-pluginutils",
+  "description": "steamer plugin utils",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
