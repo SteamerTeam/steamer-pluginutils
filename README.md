@@ -12,7 +12,7 @@ For usage details, you can take a look at test folder.
 
 - cacheMode
 	- Boolean
-	- Default: true
+	- Default: false
 	- cache config or not
 
 - config

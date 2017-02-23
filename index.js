@@ -3,17 +3,16 @@
 const os = require('os'),
 	  path = require('path'),
 	  fs = require('fs-extra'),
-	  colors = require('colors'),
+	  chalk = require('chalk'),
 	  _ = require('lodash');
 
 
-function pluginUtils() {
-	this.pluginName = "";
-	this.cacheMode = true;
+function pluginUtils(pluginName) {
+	this.pluginName = pluginName || "";
+	this.cacheMode = false;
 	this.config = null; // cache config
 
 	this.isWindows = (os.type() === "Windows_NT");
-
 	this.globalNodeModules = path.join(process.env.NODE_PATH);
 }
 
@@ -165,25 +164,27 @@ pluginUtils.prototype.writePkgJson = function(pkgjson, content) {
 };
 
 pluginUtils.prototype.error = function(str) {
-	this._printMessage(str, 'red');
+	return this._printMessage(str, 'red');
 };
 
 pluginUtils.prototype.info = function(str) {
-	this._printMessage(str, 'cyan');
+	return this._printMessage(str, 'cyan');
 };
 
 pluginUtils.prototype.warn = function(str) {
-	this._printMessage(str, 'yellow');
+	return this._printMessage(str, 'yellow');
 };
 
 pluginUtils.prototype.success = function(str) {
-	this._printMessage(str, 'green');
+	return this._printMessage(str, 'green');
 };
 
 pluginUtils.prototype._printMessage = function(str, color) {
 	str = str || '';
 	str = _.isObject(str) ? JSON.stringify(str) : str;
-	console.log(str[color]);
+	let msg = chalk[color](str);
+	console.log(msg);
+	return msg;
 };
 
 module.exports = pluginUtils;

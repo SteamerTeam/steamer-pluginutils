@@ -2,7 +2,8 @@
 
 const pluginUtils = require('../index'),
 	  path = require('path'),
-	  fs = require('fs-extra');
+	  fs = require('fs-extra'),
+	  chalk = require('chalk');
 
 fs.removeSync("./spec/test/");
 
@@ -141,3 +142,60 @@ describe("read and write package.json", function() {
 		expect(JSON.stringify(resultConfig)).toEqual(JSON.stringify(targetConfig));
   	});
 });
+
+describe("test message print", function() {
+
+	var utils = new pluginUtils(),
+		v1, v2, v3, v4;
+
+	beforeEach(function() {
+
+	    spyOn(utils, 'error').and.returnValue('error');
+	    spyOn(utils, 'info').and.returnValue('info');
+	    spyOn(utils, 'warn').and.returnValue('warn');
+	    spyOn(utils, 'success').and.returnValue('success');
+
+	    v1 = utils.error('error');
+	    v2 = utils.info('info');
+	    v3 = utils.warn('warn');
+	    v4 = utils.success('success');
+	});
+
+	it("tracks that the print spy was called", function() {
+	    expect(utils.error).toHaveBeenCalled();
+	    expect(utils.info).toHaveBeenCalled();
+	    expect(utils.warn).toHaveBeenCalled();
+	    expect(utils.success).toHaveBeenCalled();
+	});
+
+	it("tracks all the arguments of print calls", function() {
+	    expect(utils.error).toHaveBeenCalledWith('error');
+	    expect(utils.info).toHaveBeenCalledWith('info');
+	    expect(utils.warn).toHaveBeenCalledWith('warn');
+	    expect(utils.success).toHaveBeenCalledWith('success');
+	});
+
+	it("tracks that the print spy return", function() {
+	    expect(v1).toEqual('error');
+	    expect(v2).toEqual('info');
+	    expect(v3).toEqual('warn');
+	    expect(v4).toEqual('success');
+	});
+
+});
+
+describe("test message print without spy", function() {
+
+	var utils = new pluginUtils();
+
+	it("tracks that the print spy return", function() {
+		console.log('\n');
+	    expect(utils.error('error')).toEqual(chalk.red('error'));
+	    expect(utils.info('info')).toEqual(chalk.cyan('info'));
+	    expect(utils.warn('warn')).toEqual(chalk.yellow('warn'));
+	    expect(utils.success('success')).toEqual(chalk.green('success'));
+	    expect(utils.error({error: 'error'})).toEqual(chalk.red(JSON.stringify({error: 'error'})));
+	    expect(utils.error(null)).toEqual(chalk.red(''));
+	});
+});
+
