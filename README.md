@@ -10,15 +10,10 @@ For usage details, you can take a look at test folder.
 	- Default: ""
 	- register plugin name
 
-- cacheMode
-	- Boolean
-	- Default: false
-	- cache config or not
-
 - config
 	- Object
 	- Default: null,
-	- config cache
+	- config
 
 - isWindows
 	- Boolean

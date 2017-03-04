@@ -9,50 +9,54 @@ const os = require('os'),
 
 function pluginUtils(pluginName) {
 	this.pluginName = pluginName || "";
-	this.cacheMode = false;
-	this.config = null; // cache config
+	// plugin config object
+	this.config = null;
 
 	this.isWindows = (os.type() === "Windows_NT");
-	this.globalNodeModules = path.join(process.env.NODE_PATH);
+
+	// global home directory, usually for global config
+	this.globalHome = process.env.home;
+
+	// global node module path
+	this.globalNodeModules = path.join(process.env.NODE_PATH || '');
 }
 
+/**
+ * add nodejs require path
+ * @param {String} requirePath [new require path]
+ * @param {String} targetPath  [target require path]
+ */
 pluginUtils.prototype.addRequirePath = function(requirePath, targetPath) {
 	var targetPath = targetPath || require.main.paths;
 	targetPath.push(requirePath);
 };
 
 /**
- * [Create config file]
- * @param  {String}  folder  [children folder relative to current folder]
- * @param  {Object}  config  [config object]
- * @param  {Boolean} isJs  [config file format json or js]
- * @param  {Boolean} isForce [is force to overwrite]
- * @param  {String}  targetName  [target file name]
+ * Create config file
+ * @param  {Object} config [config object]
+ * @param  {Object} option [options]
  */
-pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce, targetName) {
+pluginUtils.prototype.createConfig = function(config, option) {
+	var config = config || "",
+		option = option || {};
 
-	var folder = folder || "",
-		config = config || "",
-		isJs = isJs || false,
-		isForce = isForce || false,
-		targetName = targetName || this.pluginName;
+	// config file path: [folder]./steamer/[filename].[extension]
+	var folder = (option.isGlobal) ? this.globalHome : (option.folder || process.cwd()),
+		filename = this.pluginName;
+		extension = option.extension || "js",
+		isJs = extension === "js",
+		overwrite = option.overwrite || false; // overwrite the config file or not
 
-	let fileExt = (isJs) ? "js" : "json",
-		newConfig = {
-			plugin: targetName,
-			config: config,
-		},
-		contentPrefix = (isJs) ? "module.exports = " : "",
-		content = contentPrefix + JSON.stringify(newConfig, null, 4),
-		configFile = path.resolve(path.join(folder, ".steamer/" + targetName + "." + fileExt));
+	var configFile = path.resolve(path.join(folder, ".steamer/" + filename + "." + extension));
 
 	try {
-		if (!isForce && fs.existsSync(configFile)) {
+		if (!overwrite && fs.existsSync(configFile)) {
 			throw new Error(configFile +  " exists");
 		}
 
-		fs.ensureFileSync(configFile);
-		fs.writeFileSync(configFile, content, 'utf-8');
+		this._writeFile(configFile, this.pluginName, config);
+		this._writeFile(configFile, content);
+		
 	}
 	catch(e) {
 		this.error(e.stack);
@@ -62,124 +66,243 @@ pluginUtils.prototype.createConfig = function(folder, config, isJs, isForce, tar
 };
 
 /**
- * [read config file]
- * @param  {String}  folder [children folder relative to current folder]
- * @param  {Boolean} isJs [config file format json or js]
- * @param  {String}  targetName  [target file name]
- * @return {Object}         [config object]
+ * read config file, local config extends global config
+ * @param  {Object} config [config object]
+ * @param  {Object} option [options]
  */
-pluginUtils.prototype.readConfig = function(folder, isJs, targetName) {
-	var folder = folder || "",
-		isJs = isJs || false,
-		targetName = targetName || this.pluginName;
+pluginUtils.prototype.readConfig = function(option) {
+	var option = option || {};
 
-	let fileExt = (isJs) ? "js" : "json",
-		configFile = path.resolve(path.join(folder, ".steamer/" + targetName + "." + fileExt));
+	var folder = option.folder || process.cwd(),
+		filename = option.filename || this.pluginName,
+		extension = option.extension || "js",
+		isJs = extension === "js";
 
-	if (!fs.existsSync(configFile)) {
-		return this.config;
-	}
+	var globalConfigFile = path.resolve(path.join(this.globalHome, ".steamer/" + filename + "." + extension)),
+		localConfigFile = path.resolve(path.join(folder, ".steamer/" + filename + "." + extension));
 
-	if (this.config && this.cacheMode) {
-		return this.config;
-	}
+	var globalConfig = this._readFile(globalConfigFile),
+		localConfig = this._readFile(localConfigFile);
 
-	try {
-		if (isJs) {
-			let config = require(configFile) || {};
-			this.config = config.config;
-		}
-		else {
-			let config = JSON.parse(fs.readFileSync(configFile, "utf-8")) || {};
-			this.config = config.config;
-		}
+	this.config = _.merge({}, globalConfig, localConfig);
 
-		return this.config;
-	}
-	catch(e) {
-		this.error(e.stack);
-	}
+	return this.config;
 };
 
 /**
- * [read steamerjs global / local config]
- * @param  {Boolean} isGlobal [is the config global or local]
+ * read steamerjs config, local config extensd global config
  * @return {Object}           [steamer config]
  */
-pluginUtils.prototype.readSteamerConfig = function(isGlobal) {
-	var isGlobal = isGlobal || false,
-		configFileName = ".steamer/steamer.js",
-		configFile = isGlobal ? path.join(this.globalNodeModules, "steamerjs", configFileName) : path.resolve(configFileName);
+pluginUtils.prototype.readSteamerConfig = function() {
+
+	var localConfigFile = path.join(process.cwd(), ".steamer/steamer.js"),
+		globalConfigFile = path.join(this.globalHomoe, ".steamer/steamer.js");
 
 
-	if (!fs.existsSync(configFile)) {
-		return {};
-	}
+	var globalConfig = this._readFile(globalConfigFile),
+		localConfig = this._readFile(localConfigFile);
 
-	try {
-		let config = require(configFile) || {};
-		return config.config;
-	}
-	catch(e) {
-		this.error(e.stack);
-	}
-
-	return {};
-	
-};
-
-/**
- * [read package.json]
- * @param  {String} pkgjson [path of the package.json]
- * @return {Object}         [content]
- */
-pluginUtils.prototype.readPkgJson = function(pkgjson) {
-	var config = null;
-
-	try {
-		config = JSON.parse(fs.readFileSync(pkgjson, "utf-8")) || {};
-	}
-	catch(e) {
-		this.error(e.stack);
-	}
+	var config = _.merge({}, globalConfig, localConfig);
 
 	return config;
 };
 
 /**
- * [write package.json]
- * @param  {String} pkgjson [path of the package.json]
- * @param  {Object} content
+ * create steamerjs config
  */
-pluginUtils.prototype.writePkgJson = function(pkgjson, content) {
-	try {
-		content = JSON.stringify(content, null, 4);
+pluginUtils.prototype.createSteamerConfig = function(config, options) {
 
-		fs.ensureFileSync(pkgjson);
-		fs.writeFileSync(pkgjson, content, 'utf-8');
+	var config = config || {};
+
+	var folder = (option.isGlobal) ? this.globalHome : process.cwd(),
+		overwrite = options.overwrite || false;
+
+	var configFile = path.join(folder, ".steamer/steamer.js");
+
+	try {
+		if (!overwrite && fs.existsSync(configFile)) {
+			throw new Error(configFile +  " exists");
+		}
+
+		this._writeFile(configFile, "steamerjs", config);
+		
 	}
 	catch(e) {
 		this.error(e.stack);
 	}
 };
 
+
+/**
+ * read config file
+ * @param  {String} filepath  [file path]
+ * @return {Object}           [config object]
+ */
+pluginUtils.prototype._readFile = function(filepath) {
+
+	var extension = path.extname(filepath);
+
+	var isJs = extension === "js",
+		config = {};
+
+	try {
+		if (isJs) {
+			config = require(filepath) || {};
+		}
+		else {
+			config = JSON.parse(fs.readFileSync(filepath, "utf-8")) || {};
+		}
+
+		config = config.config;
+
+	}
+	catch(e) {
+		return config;
+	}
+
+	return config;
+
+};
+
+/**
+ * write config file
+ * @param  {String} filepath [config file path]
+ * @param  {Object|String}          [config content]
+ */
+pluginUtils.prototype._writeFile = function(filepath, plugin, config) {
+
+	var extension = path.extname(filepath);
+
+	var isJs = extension === "js",
+		newConfig = {
+			plugin: plugin,
+			config: config,
+		},
+		contentPrefix = (isJs) ? "module.exports = " : "",
+		content = contentPrefix + JSON.stringify(newConfig, null, 4);
+
+	try {
+		fs.ensureFileSync(filepath);
+		fs.writeFileSync(filepath, content, 'utf-8');
+	}
+	catch(e) {
+		this.error(e.stack);
+	}
+};
+
+/**
+ * [read package.json]
+ * @param  {String} filename [path of the package.json]
+ * @return {Object}         [content]
+ */
+pluginUtils.prototype.readPkgJson = function(filename) {
+	return this._readFile(filename);
+};
+
+/**
+ * [write package.json]
+ * @param  {String} filename [path of the package.json]
+ * @param  {Object} config
+ */
+pluginUtils.prototype.writePkgJson = function(filename, config) {
+	this._writeFile(filename, this.pluginName, config);
+};
+
+/**
+ * print error message
+ * @param  {String} str [message]
+ * @return {String}     [msg]
+ */
 pluginUtils.prototype.error = function(str) {
-	return this._printMessage(str, 'red');
+	return this.log(str, 'red');
 };
 
+/**
+ * print information
+ * @param  {String} str [message]
+ * @return {String}     [msg]
+ */
 pluginUtils.prototype.info = function(str) {
-	return this._printMessage(str, 'cyan');
+	return this.log(str, 'cyan');
 };
 
+/**
+ * print warning message
+ * @param  {String} str [message]
+ * @return {String}     [msg]
+ */
 pluginUtils.prototype.warn = function(str) {
-	return this._printMessage(str, 'yellow');
+	return this.log(str, 'yellow');
 };
 
+/**
+ * print success message
+ * @param  {String} str [message]
+ * @return {String}     [msg]
+ */
 pluginUtils.prototype.success = function(str) {
-	return this._printMessage(str, 'green');
+	return this.log(str, 'green');
 };
 
-pluginUtils.prototype._printMessage = function(str, color) {
+
+/**
+ * print title message
+ * @param  {String} color [color name]
+ * @return {String}       [msg with color]
+ */
+pluginUtils.prototype.printTitle = function(str, color) {
+	var msg = "",
+		str = " " + str + " ",
+		len = str.length + 2,
+		mid = Math.round(len / 2);
+
+	for (let i = 0; msg.length < 80; i++) {
+		if (i === 39 - mid) {
+			msg += str;
+		}
+		else {
+			msg += "=";
+		}
+	}
+
+	return this.log(msg, color);
+};
+
+/**
+ * print end message
+ * @param  {String} color [color name]
+ * @return {String}       [msg with color]
+ */
+pluginUtils.prototype.printEnd = function(color) {
+	var msg = "";
+
+	for (let i = 0; msg.length < 80; i++) {
+		msg += "=";
+	}
+	return this.log(msg, color);
+};
+
+pluginUtils.prototype.printUsage = function(cmd = '', description) {
+	var msg = "usage: ";
+	msg += chalk.white("steamer " + cmd + "    " + description + "\n");
+	console.log(msg);
+	return msg;
+};
+
+pluginUtils.prototype.printOption = function(cmd = '', description) {
+	var msg = "options: ";
+	msg += chalk.white("steamer " + cmd + "\n");
+	console.log(msg);
+	return msg;
+};
+
+/**
+ * pring message
+ * @param  {String} str   [message]
+ * @param  {String} color [color name]
+ * @return {String}       [message with color]
+ */
+pluginUtils.prototype.log = function(str, color) {
 	str = str || '';
 	str = _.isObject(str) ? JSON.stringify(str) : str;
 	let msg = chalk[color](str);
