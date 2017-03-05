@@ -285,6 +285,12 @@ pluginUtils.prototype.printEnd = function(color) {
 	return this.log(msg, color);
 };
 
+/**
+ * print command usage
+ * @param  {String} description [description of the command]
+ * @param  {String} cmd         [command name]
+ * @return {String}             [message]
+ */
 pluginUtils.prototype.printUsage = function(description, cmd) {
 	var msg = chalk.green("\nusage: \n"),
 		cmd = cmd || this.pluginName.replace(this.pluginPrefix, "");
@@ -294,6 +300,15 @@ pluginUtils.prototype.printUsage = function(description, cmd) {
 	return msg;
 };
 
+/**
+ * print command option
+ * @param  {Array} options  [array of options]
+ 	- option  		{String}    full option
+ 	- alias   		{String}    option alias
+ 	- value   		{String}    option alias
+ 	- description  	{String}    option description
+ * @return {String}         [message]
+ */
 pluginUtils.prototype.printOption = function(options) {
 
 	var options = options || [];
@@ -306,7 +321,7 @@ pluginUtils.prototype.printOption = function(options) {
 	options.map((item) => {
 		let option = item.option || '',
 			alias = item.alias || '',
-			value = item.value || '';
+			value = item.value || ''; 
 
 		let msg = "    --" + option;
 		msg  += (alias) ? ", -" + alias : "";
@@ -332,8 +347,6 @@ pluginUtils.prototype.printOption = function(options) {
 
 	});
 
-	// console.log(options);
-
 	options.map((item) => {
 
 		item.msg += item.description + "\n";
@@ -341,7 +354,6 @@ pluginUtils.prototype.printOption = function(options) {
 		msg += item.msg;
 
 	});
-
 
 	console.log(msg);
 	return msg;
