@@ -8,6 +8,9 @@ const os = require('os'),
 
 
 function pluginUtils(pluginName) {
+
+	this.pluginPrefix = "steamer-plugin-";
+
 	this.pluginName = pluginName || "";
 	// plugin config object
 	this.config = null;
@@ -282,16 +285,64 @@ pluginUtils.prototype.printEnd = function(color) {
 	return this.log(msg, color);
 };
 
-pluginUtils.prototype.printUsage = function(cmd = '', description) {
-	var msg = "usage: ";
-	msg += chalk.white("steamer " + cmd + "    " + description + "\n");
+pluginUtils.prototype.printUsage = function(description, cmd) {
+	var msg = chalk.green("\nusage: \n"),
+		cmd = cmd || this.pluginName.replace(this.pluginPrefix, "");
+
+	msg += "steamer " + cmd + "    " + description + "\n";
 	console.log(msg);
 	return msg;
 };
 
-pluginUtils.prototype.printOption = function(cmd = '', description) {
-	var msg = "options: ";
-	msg += chalk.white("steamer " + cmd + "\n");
+pluginUtils.prototype.printOption = function(options) {
+
+	var options = options || [];
+
+	var maxColumns = process.stdout.columns || 84,
+		maxOptionLength = 0;
+
+	var msg = chalk.green("options: \n");
+
+	options.map((item) => {
+		let option = item.option || '',
+			alias = item.alias || '',
+			value = item.value || '';
+
+		let msg = "    --" + option;
+		msg  += (alias) ? ", -" + alias : "";
+		msg += (value) ?  " " + value : "";
+
+		item.msg = msg;
+		
+		let msgLen = msg.length;
+
+		maxOptionLength = (msgLen > maxOptionLength) ? msgLen : maxOptionLength;
+
+		return item;
+	});
+
+	options.map((item) => {
+		let length = item.msg.length;
+
+		let space = " ".repeat(maxOptionLength - length);
+
+		item.msg = item.msg + space + "    ";
+
+		return item;
+
+	});
+
+	// console.log(options);
+
+	options.map((item) => {
+
+		item.msg += item.description + "\n";
+
+		msg += item.msg;
+
+	});
+
+
 	console.log(msg);
 	return msg;
 };
