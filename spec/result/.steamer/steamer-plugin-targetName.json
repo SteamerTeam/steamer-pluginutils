@@ -1,6 +1,0 @@
-{
-    "plugin": "steamer-plugin-targetName",
-    "config": {
-        "test": "test"
-    }
-}

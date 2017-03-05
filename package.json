@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint index.js",
     "test": "npm run lint && mocha",
-    "coverage": "istanbul cover mocha"
+    "coverage": "istanbul cover node_modules/.bin/_mocha -- -- -u exports -R test/**/*"
   },
   "repository": {
     "type": "git",

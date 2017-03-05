@@ -45,26 +45,18 @@ pluginUtils.prototype.createConfig = function(config, option) {
 
 	// config file path: [folder]./steamer/[filename].[extension]
 	var folder = (option.isGlobal) ? this.globalHome : (option.folder || process.cwd()),
-		filename = this.pluginName;
+		filename = option.filename || this.pluginName,
 		extension = option.extension || "js",
-		isJs = extension === "js",
 		overwrite = option.overwrite || false; // overwrite the config file or not
 
 	var configFile = path.resolve(path.join(folder, ".steamer/" + filename + "." + extension));
 
-	try {
-		if (!overwrite && fs.existsSync(configFile)) {
-			throw new Error(configFile +  " exists");
-		}
-
-		this._writeFile(configFile, this.pluginName, config);
-		this._writeFile(configFile, content);
-		
-	}
-	catch(e) {
-		this.error(e.stack);
+	if (!overwrite && fs.existsSync(configFile)) {
+		throw new Error(configFile +  " exists");
 	}
 
+	this._writeFile(configFile, filename, config);
+	
 	this.config = null;
 };
 
@@ -78,8 +70,7 @@ pluginUtils.prototype.readConfig = function(option) {
 
 	var folder = option.folder || process.cwd(),
 		filename = option.filename || this.pluginName,
-		extension = option.extension || "js",
-		isJs = extension === "js";
+		extension = option.extension || "js";
 
 	var globalConfigFile = path.resolve(path.join(this.globalHome, ".steamer/" + filename + "." + extension)),
 		localConfigFile = path.resolve(path.join(folder, ".steamer/" + filename + "." + extension));
@@ -117,7 +108,7 @@ pluginUtils.prototype.createSteamerConfig = function(config, options) {
 
 	var config = config || {};
 
-	var folder = (option.isGlobal) ? this.globalHome : process.cwd(),
+	var folder = (options.isGlobal) ? this.globalHome : process.cwd(),
 		overwrite = options.overwrite || false;
 
 	var configFile = path.join(folder, ".steamer/steamer.js");
@@ -145,7 +136,7 @@ pluginUtils.prototype._readFile = function(filepath) {
 
 	var extension = path.extname(filepath);
 
-	var isJs = extension === "js",
+	var isJs = extension === ".js",
 		config = {};
 
 	try {
@@ -175,40 +166,22 @@ pluginUtils.prototype._readFile = function(filepath) {
 pluginUtils.prototype._writeFile = function(filepath, plugin, config) {
 
 	var extension = path.extname(filepath);
-
-	var isJs = extension === "js",
+	var isJs = extension === ".js",
 		newConfig = {
 			plugin: plugin,
 			config: config,
 		},
 		contentPrefix = (isJs) ? "module.exports = " : "",
-		content = contentPrefix + JSON.stringify(newConfig, null, 4);
+		contentPostfix = (isJs) ? ";" : "",
+		content = contentPrefix + JSON.stringify(newConfig, null, 4) + contentPostfix;
 
 	try {
 		fs.ensureFileSync(filepath);
 		fs.writeFileSync(filepath, content, 'utf-8');
 	}
 	catch(e) {
-		this.error(e.stack);
+		throw e;
 	}
-};
-
-/**
- * [read package.json]
- * @param  {String} filename [path of the package.json]
- * @return {Object}         [content]
- */
-pluginUtils.prototype.readPkgJson = function(filename) {
-	return this._readFile(filename);
-};
-
-/**
- * [write package.json]
- * @param  {String} filename [path of the package.json]
- * @param  {Object} config
- */
-pluginUtils.prototype.writePkgJson = function(filename, config) {
-	this._writeFile(filename, this.pluginName, config);
 };
 
 /**
@@ -217,7 +190,7 @@ pluginUtils.prototype.writePkgJson = function(filename, config) {
  * @return {String}     [msg]
  */
 pluginUtils.prototype.error = function(str) {
-	return this.log(str, 'red');
+	this.log(str, 'red');
 };
 
 /**
@@ -226,7 +199,7 @@ pluginUtils.prototype.error = function(str) {
  * @return {String}     [msg]
  */
 pluginUtils.prototype.info = function(str) {
-	return this.log(str, 'cyan');
+	this.log(str, 'cyan');
 };
 
 /**
@@ -235,7 +208,7 @@ pluginUtils.prototype.info = function(str) {
  * @return {String}     [msg]
  */
 pluginUtils.prototype.warn = function(str) {
-	return this.log(str, 'yellow');
+	this.log(str, 'yellow');
 };
 
 /**
@@ -244,7 +217,7 @@ pluginUtils.prototype.warn = function(str) {
  * @return {String}     [msg]
  */
 pluginUtils.prototype.success = function(str) {
-	return this.log(str, 'green');
+	this.log(str, 'green');
 };
 
 
@@ -255,18 +228,14 @@ pluginUtils.prototype.success = function(str) {
  */
 pluginUtils.prototype.printTitle = function(str, color) {
 	var msg = "",
+		color = color || 'white',
 		str = " " + str + " ",
-		len = str.length + 2,
-		mid = Math.round(len / 2);
+		len = str.length,
+		maxLen = process.stdout.columns;
 
-	for (let i = 0; msg.length < 80; i++) {
-		if (i === 39 - mid) {
-			msg += str;
-		}
-		else {
-			msg += "=";
-		}
-	}
+	var padding = "=".repeat(Math.floor((maxLen - len) / 2));
+
+	msg += padding + str + padding;
 
 	return this.log(msg, color);
 };
@@ -277,11 +246,12 @@ pluginUtils.prototype.printTitle = function(str, color) {
  * @return {String}       [msg with color]
  */
 pluginUtils.prototype.printEnd = function(color) {
-	var msg = "";
+	var msg = "",
+		color = color || 'white',
+		maxLen = process.stdout.columns;
 
-	for (let i = 0; msg.length < 80; i++) {
-		msg += "=";
-	}
+	msg += "=".repeat(maxLen);
+
 	return this.log(msg, color);
 };
 
@@ -297,7 +267,6 @@ pluginUtils.prototype.printUsage = function(description, cmd) {
 
 	msg += "steamer " + cmd + "    " + description + "\n";
 	console.log(msg);
-	return msg;
 };
 
 /**
@@ -356,7 +325,6 @@ pluginUtils.prototype.printOption = function(options) {
 	});
 
 	console.log(msg);
-	return msg;
 };
 
 /**
