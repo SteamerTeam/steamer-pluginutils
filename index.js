@@ -18,7 +18,7 @@ function pluginUtils(pluginName) {
 	this.isWindows = (os.type() === "Windows_NT");
 
 	// global home directory, usually for global config
-	this.globalHome = this.getGlobalHome();
+	this.globalHome = this._getGlobalHome();
 
 	// global node module path
 	this.globalNodeModules = process.env.NODE_PATH || '';
@@ -28,7 +28,7 @@ function pluginUtils(pluginName) {
  * get home directory
  * @return {String} [os home directory]
  */
-pluginUtils.prototype.getGlobalHome = function() {
+pluginUtils.prototype._getGlobalHome = function() {
 	return os.homedir() || process.cwd();
 };
 
