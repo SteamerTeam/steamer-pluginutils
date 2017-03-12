@@ -20,7 +20,7 @@
 	- 是否window系统
 - `globalHome`
 	- `String`
-	- 通常用作全局配置存放的位置，是 `process.env.home` 的一层包装
+	- 通常用作全局配置存放的位置，是 `os.homedir()` 的一层包装
 
 - `globalNodeModules`
 	- `String`
