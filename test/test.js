@@ -2,21 +2,22 @@
 
 const pluginUtils = require('../index'),
 	  path = require('path'),
+	  os = require('os'),
 	  fs = require('fs-extra'),
 	  chalk = require('chalk'),
 	  expect = require('expect.js'),
 	  sinon = require('sinon');
 
-const TEST_TEMP = 'TEST_TEMP';
+const TEMP = 'TEMP';
 
 before(function() {
 	process.chdir('./test');
-	fs.ensureDirSync(TEST_TEMP);
+	fs.ensureDirSync(TEMP);
 });
 
 after(function() {
 	process.chdir('..');
-	fs.removeSync(TEST_TEMP);
+	fs.removeSync(TEMP);
 });
 
 describe("addRequirePath", function() {
@@ -37,7 +38,7 @@ describe("createConfig & readConfig:", function() {
 		cwd = '';
 
 	before(function() {
-	    process.chdir(TEST_TEMP);
+	    process.chdir(TEMP);
 	    cwd = process.cwd();
 	});
 
@@ -45,7 +46,7 @@ describe("createConfig & readConfig:", function() {
 	//     // this.sandbox.restore();
 	// });
 
-	it("createConfig without config", function() {
+	it("createConfig without option", function() {
 		var utils = new pluginUtils("steamer-plugin-" + now);
 
 		utils.createConfig({
@@ -79,7 +80,7 @@ describe("createConfig & readConfig:", function() {
 		fs.ensureFileSync(configFile);
 
 		utils.createConfig({
-			test: 'test'
+			test: 'test2json'
 		}, {
 			filename: "test2",
 			extension: "json",
@@ -91,9 +92,114 @@ describe("createConfig & readConfig:", function() {
 		expect(config).to.eql({
 			plugin: 'test2',
 			config: {
-				test: 'test'
+				test: 'test2json'
 			}
 		});
+  	});
+
+  	it("read local config without option", function() {
+  		var utils = new pluginUtils("steamer-plugin-" + now);
+
+		var config = utils.readConfig();
+
+		expect(config).to.eql({ test: 'test' });
+  	});
+
+  	it("read local config with option", function() {
+  		var utils = new pluginUtils("steamer-plugin-" + now);
+
+		var config = utils.readConfig({
+			filename: "test2",
+			extension: "json",
+		});
+
+		expect(config).to.eql({ test: 'test2json' });
+  	});
+
+  	it("create and read global config", function() {
+  		var sandbox = sinon.sandbox.create();
+
+  		var utils = new pluginUtils("steamer-plugin-test3");
+
+  		sandbox.stub(fs, "ensureFileSync", function() {
+  			
+  		});
+  		sandbox.stub(fs, "writeFileSync", function() {
+  			
+  		});
+
+  		var _readFile = sandbox.stub(utils, "_readFile");
+  		_readFile.onCall(0).returns({test1: 'test1'});
+  		_readFile.onCall(1).returns({test1: 'test', test2: 'test2'});
+
+		utils.createConfig({
+			test1: 'test',
+			test2: 'test2'
+		}, {
+			isGlobal: true
+		});
+
+		var config = utils.readConfig({});
+
+		expect(config).to.eql({test1: 'test', test2: 'test2'});
+
+		sandbox.restore();
+  	});
+
+  	it("create and read steamer config", function() {
+  		var sandbox = sinon.sandbox.create();
+
+  		var utils = new pluginUtils("steamer-plugin-test3");
+
+  		sandbox.stub(fs, "ensureFileSync", function() {
+  			
+  		});
+  		sandbox.stub(fs, "writeFileSync", function() {
+  			
+  		});
+
+  		var _readFile = sandbox.stub(utils, "_readFile");
+  		_readFile.onCall(0).returns({test1: 'test1'});
+  		_readFile.onCall(1).returns({test1: 'test', test2: 'test2'});
+
+		utils.createSteamerConfig({
+			test1: 'test',
+			test2: 'test2'
+		});
+
+		var config = utils.readSteamerConfig({});
+
+		expect(config).to.eql({test1: 'test', test2: 'test2'});
+
+		sandbox.restore();
+  	});
+
+  	it("create config in existing file", function() {
+  		var sandbox = sinon.sandbox.create();
+
+  		var utils = new pluginUtils("steamer-plugin-test4");
+
+  		sandbox.stub(fs, "ensureFileSync", function() {
+  			
+  		});
+  		sandbox.stub(fs, "writeFileSync", function() {
+  			
+  		});
+  		sandbox.stub(utils, "error"); // supress error log
+  		
+  		var existSync = sandbox.stub(fs, "existsSync");
+  		existSync.withArgs(path.join(os.homedir(), ".steamer/steamer.js")).returns(true);
+
+  		expect(function() {
+			utils.createSteamerConfig({
+				test1: 'test',
+				test2: 'test2'
+			}, {
+				isGlobal: true
+			});
+		}).to.throwError();
+
+		sandbox.restore();
   	});
 
 });
@@ -143,9 +249,9 @@ describe("print message:", function() {
   	});
 
   	it("printTitle", function() {
-  		utils.printTitle('cmd', 'white');
+  		utils.printTitle('test3', 'white');
 
-		var str = " cmd ",
+		var str = " test3 ",
 			len = str.length,
 			maxLen = process.stdout.columns;
 
@@ -163,6 +269,58 @@ describe("print message:", function() {
 
 		expect(console.log.calledOnce).to.be(true);
 		expect(console.log.calledWith(chalk['white']("=".repeat(maxLen)))).to.be(true);
+		log.restore();
+  	});
+
+  	it("printUsage", function() {
+  		var des = 123;
+
+  		utils.printUsage(des);
+
+  		var msg = chalk.green("\nusage: \n");
+  		msg += "steamer test3    " + des + "\n";
+
+		expect(console.log.calledOnce).to.be(true);
+		expect(console.log.calledWith(msg)).to.be(true);
+		log.restore();
+  	});
+
+  	it("printOption", function() {
+
+  		// log.restore();
+
+  		utils.printOption([
+			{
+				option: "del",
+				alias: "d",
+				description: "delete file"
+			},
+			{
+				option: "add",
+				alias: "a",
+				description: "add file"
+			},
+			{
+				option: "config",
+				alias: "c",
+				description: "set config"
+			},
+			{
+				option: "init",
+				alias: "i",
+				value: "<kit name>",
+				description: "init starter kit name"
+			},
+			{
+				option: "random",
+				alias: "r",
+				value: "<123123123123123123>",
+				description: "123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123"
+			},
+		]);
+  		
+		expect(console.log.calledOnce).to.be(true);
+		// expect(console.log.calledWith(msg)).to.be(true);
 		log.restore();
   	});
 });

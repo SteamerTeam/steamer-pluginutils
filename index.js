@@ -18,11 +18,19 @@ function pluginUtils(pluginName) {
 	this.isWindows = (os.type() === "Windows_NT");
 
 	// global home directory, usually for global config
-	this.globalHome = process.env.home;
+	this.globalHome = this.getGlobalHome();
 
 	// global node module path
-	this.globalNodeModules = path.join(process.env.NODE_PATH || '');
+	this.globalNodeModules = process.env.NODE_PATH || '';
 }
+
+/**
+ * get home directory
+ * @return {String} [os home directory]
+ */
+pluginUtils.prototype.getGlobalHome = function() {
+	return os.homedir() || process.cwd();
+};
 
 /**
  * add nodejs require path
@@ -90,7 +98,7 @@ pluginUtils.prototype.readConfig = function(option) {
 pluginUtils.prototype.readSteamerConfig = function() {
 
 	var localConfigFile = path.join(process.cwd(), ".steamer/steamer.js"),
-		globalConfigFile = path.join(this.globalHomoe, ".steamer/steamer.js");
+		globalConfigFile = path.join(this.globalHome, ".steamer/steamer.js");
 
 
 	var globalConfig = this._readFile(globalConfigFile),
@@ -106,7 +114,8 @@ pluginUtils.prototype.readSteamerConfig = function() {
  */
 pluginUtils.prototype.createSteamerConfig = function(config, options) {
 
-	var config = config || {};
+	var config = config || {},
+		options = options || {};
 
 	var folder = (options.isGlobal) ? this.globalHome : process.cwd(),
 		overwrite = options.overwrite || false;
@@ -123,6 +132,7 @@ pluginUtils.prototype.createSteamerConfig = function(config, options) {
 	}
 	catch(e) {
 		this.error(e.stack);
+		throw e;
 	}
 };
 

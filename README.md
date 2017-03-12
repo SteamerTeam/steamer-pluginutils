@@ -1,54 +1,61 @@
 ## steamer-pluginutils
-utils for steamerjs plugin
 
-### Api
+[steamerjs](https://github.com/SteamerTeam/steamerjs) 便于开发 `plugin` 的 `util` 函数
 
-For usage details, you can take a look at test folder. 
+### 接口
 
-- pluginName
-	- String
-	- Default: ""
-	- register plugin name
+#### 属性
+- `pluginName`
+	- `String`
+	- 默认值: ""
+	- 注册 `plugin` 名
 
-- config
-	- Object
-	- Default: null,
-	- config
+- `config`
+	- `Object`
+	- 默认值: null,
+	- 配置值
 
-- isWindows
-	- Boolean
-	- whether the os system is windows or not
+- `isWindows`
+	- `Boolean`
+	- 是否window系统
+- `globalHome`
+	- `String`
+	- 通常用作全局配置存放的位置，是 `process.env.home` 的一层包装
 
-- globalNodeModules
-	- String
-	- global node module path based on os system, a wrapper for `process.env.NODE_PATH`
+- `globalNodeModules`
+	- `String`
+	- 全局 `npm` 模块包位置， 是 `process.env.NODE_PATH` 的一层包装
 
-- addRequirePath
+#### 配置函数
+
+- `addRequirePath`
+	- `Function`
+	- 添加模块搜索路径
+	- 参数
+	- `requirePath`, `String`, 新的模块搜索路径
+	- `targetPath`, `String`, 添加新模块搜索路径的目标, 默认值: `require.main.paths`
+
+- `createConfig`
 	- Function
-	- add require search path
-	- Parameters
-	- `requirePath`, new search path you wanna add
-	- `targetPath`, target path you wanna add into, default: `require.main.paths`
+	- 创建配置
+	- 参数
+		- `config`, config object, 默认值为: `{}`
+		- `option`, 其它配置项目
+			- `isGlobal`,`Boolean`， 是否放于全局
+			- `folder`, `String`, `.steamer` 的父目录，
+			- `filename`, `String`, 具体的文件名
+			- `extension`, `String`, 文件名后缀，默认值：`js`
+			- `overwrite`, `Boolean`, 是否覆盖已经存在的配置文件
 
-- createConfig
-	- Function
-	- create config
-	- Parameters
-		- `folder`, children folder relative to current folder, default: `""`
-		- `config`, config object, default: `{}`
-		- `isJs`, config file format json or js, default: `false`
-		- `isForce`, is force to overwrite, default: `false`
-		- `targetName`, target file name, default will the the value of `this.pluginName`
 
-- readConfig
+- `readConfig`
 	- Function
-	- create config
-	- Parameters
-		- `folder`, children folder relative to current folder, default: `""`
- 		- `isJs`, config file format json or js, default: `false`
- 		- `targetName`, target file name, default will the the value of `this.pluginName`
- 	- Return
- 		- `config`, config object
+	- 读取配置, 采用配置继承的方式，本地配置继承全局配置
+	- 参数
+		- `option`, 其它配置项目
+			- `folder`, `String`, `.steamer` 的父目录，
+			- `filename`, `String`, 具体的文件名
+			- `extension`, `String`, 文件名后缀，默认值：`js`
 
 - readSteamerConfig
 	- Function
@@ -58,50 +65,39 @@ For usage details, you can take a look at test folder.
 	- Return 
 		- `config`, config object
 
-- readPkgJson
+- createSteamerConfig
 	- Function
-	- read package.json
+	- read steamerjs global or local config
 	- Parameters
-		- `pkgjson`, path of the package.json
+		- `isGlobal`, is the config global or local, default: `false`
 	- Return 
-		- `config`, content
+		- `config`, config object
 
-- writePkgJson
-	- Function
-	- read package.json
-	- Parameters
-		- `pkgjson`, path of the package.json
-		- `content`
+#### 命令输出
 
 - error
 	- Function
-	- print message in red
+	- 将文本以红色输出
 
 - info
 	- Function
-	- print message in cyan
+	- 将文本以蓝色输出
 
 - warn
 	- Function
-	- print message in yellow
+	- 将文本以黄色输出
 
 - success
 	- Function
-	- print message in green
+	- 将文本以绿色输出
 
 
-### For Development
+### 开发及测试
 ```
-// for correct the code format
+// 用于全局进行代码清理
 npm i -g eslint
-
 npm run lint
 
-// for testing
-npm i -g jasmine
-
+// 用于测试
 npm test
 ```
-
-## Changelog
-* v1.0.5 change globalNodeModules path
