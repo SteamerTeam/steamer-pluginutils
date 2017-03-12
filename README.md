@@ -91,6 +91,57 @@
 	- Function
 	- 将文本以绿色输出
 
+- printTitle
+ 	- Function
+ 	- 输出命令标题
+ 	- Parameters
+ 		- `str`, 标题
+ 		- `color`, 颜色
+```
+// 例子
+================================ Command Usage ================================
+```
+
+- printEnd
+ 	- Function
+ 	- 输出命令结尾
+ 	- Parameters
+ 		- `color`, 颜色
+```
+// 例子
+================================================================================
+```
+
+- printUsage
+ 	- Function
+ 	- 输出命令使用
+ 	- Parameters
+ 		- `description`, 命令描述
+ 		- `cmd`, 命令名称
+ ```
+ // 例子
+usage:
+steamer doctor    help you check steamer running environment!!!
+ ```
+
+ - printOption
+	 - Function
+	 	- 输出命令参数
+	 	- Parameters
+	 		- `options`, 参数数组
+	 			- `option.option`, 参数名
+	 			- `option.alias`, 参数别名
+	 			- `option.value`, 参数值
+```
+// 例子
+options:
+    --help, -h                    123
+    --ak, -a                      456
+    --plugin, -p <plugin name>    789
+    --help                        123
+```
+
+
 
 ### 开发及测试
 ```
