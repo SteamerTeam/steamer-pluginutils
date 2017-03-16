@@ -97,17 +97,40 @@ pluginUtils.prototype.readConfig = function(option) {
  */
 pluginUtils.prototype.readSteamerConfig = function() {
 
-	var localConfigFile = path.join(process.cwd(), ".steamer/steamer.js"),
-		globalConfigFile = path.join(this.globalHome, ".steamer/steamer.js");
-
-
-	var globalConfig = this._readFile(globalConfigFile),
-		localConfig = this._readFile(localConfigFile);
+	var globalConfig = this.readSteamerLocalConfig(),
+		localConfig = this.readSteamerGlobalConfig();
 
 	var config = _.merge({}, globalConfig, localConfig);
 
 	return config;
 };
+
+/**
+ * read steamerjs local config
+ * @return {Object} [steamer local config]
+ */
+pluginUtils.prototype.readSteamerLocalConfig = function() {
+	
+	var localConfigFile = path.join(process.cwd(), ".steamer/steamer.js");
+
+	var localConfig = this._readFile(localConfigFile);
+
+	return localConfig;
+};
+
+/**
+ * read steamerjs global config
+ * @return {Object} [steamer global config]
+ */
+pluginUtils.prototype.readSteamerGlobalConfig = function() {
+	
+	var globalConfigFile = path.join(this.globalHome, ".steamer/steamer.js");
+
+	var globalConfig = this._readFile(globalConfigFile);
+
+	return globalConfig;
+};
+
 
 /**
  * create steamerjs config
