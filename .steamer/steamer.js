@@ -1,3 +1,0 @@
-{
-    "plugin": "./spec/test/"
-}
