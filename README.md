@@ -65,6 +65,18 @@
 	- Return 
 		- `config`, config object
 
+- readSteamerLocalConfig
+	- Function
+	- read steamerjs local config
+	- Return
+		- `config`, local config object
+
+- readSteamerGlobalConfig
+	- Function
+	- read steamerjs global config
+	- Return
+		- `config`, global config object
+
 - createSteamerConfig
 	- Function
 	- read steamerjs global or local config
