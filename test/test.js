@@ -250,6 +250,7 @@ describe("print message:", function() {
 
   	it("printTitle", function() {
   		try {
+  			console.dir(process.stdout.columns);
 	  		utils.printTitle('test3', 'white');
 
 			var str = " test3 ",
