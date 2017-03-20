@@ -263,7 +263,7 @@ pluginUtils.prototype.printTitle = function(str, color) {
 		color = color || 'white',
 		str = " " + str + " ",
 		len = str.length,
-		maxLen = process.stdout.columns;
+		maxLen = (process.stdout.columns !== Infinity) ? process.stdout.columns : 84;
 
 	var padding = "=".repeat(Math.floor((maxLen - len) / 2));
 
@@ -280,7 +280,7 @@ pluginUtils.prototype.printTitle = function(str, color) {
 pluginUtils.prototype.printEnd = function(color) {
 	var msg = "",
 		color = color || 'white',
-		maxLen = process.stdout.columns;
+		maxLen = (process.stdout.columns !== Infinity) ? process.stdout.columns : 84;
 
 	msg += "=".repeat(maxLen);
 
@@ -314,7 +314,7 @@ pluginUtils.prototype.printOption = function(options) {
 
 	var options = options || [];
 
-	var maxColumns = process.stdout.columns || 84,
+	var maxColumns = (process.stdout.columns !== Infinity) ? process.stdout.columns : 84,
 		maxOptionLength = 0;
 
 	var msg = chalk.green("options: \n");

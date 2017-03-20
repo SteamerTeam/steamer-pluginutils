@@ -254,7 +254,7 @@ describe("print message:", function() {
 
 			var str = " test3 ",
 				len = str.length,
-				maxLen = process.stdout.columns;
+				maxLen = (process.stdout.columns !== Infinity) ? process.stdout.columns : 84;
 
 			var padding = "=".repeat(Math.floor((maxLen - len) / 2));
 
@@ -271,7 +271,7 @@ describe("print message:", function() {
   	it("printEnd", function() {
   		utils.printEnd('white');
 
-  		var maxLen = process.stdout.columns;
+  		var maxLen = (process.stdout.columns !== Infinity) ? process.stdout.columns : 84;
 
 		expect(console.log.calledOnce).to.be(true);
 		expect(console.log.calledWith(chalk['white']("=".repeat(maxLen)))).to.be(true);
