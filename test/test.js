@@ -285,40 +285,40 @@ describe("print message:", function() {
 		// log.restore();
   // 	});
 
-  // 	it("printOption", function() {
+  	it("printOption", function() {
 
-  // 		utils.printOption([
-		// 	{
-		// 		option: "del",
-		// 		alias: "d",
-		// 		description: "delete file"
-		// 	},
-		// 	{
-		// 		option: "add",
-		// 		alias: "a",
-		// 		description: "add file"
-		// 	},
-		// 	{
-		// 		option: "config",
-		// 		alias: "c",
-		// 		description: "set config"
-		// 	},
-		// 	{
-		// 		option: "init",
-		// 		alias: "i",
-		// 		value: "<kit name>",
-		// 		description: "init starter kit name"
-		// 	},
-		// 	{
-		// 		option: "random",
-		// 		alias: "r",
-		// 		value: "<123123123123123123>",
-		// 		description: "123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123"
-		// 	},
-		// ]);
+  		utils.printOption([
+			{
+				option: "del",
+				alias: "d",
+				description: "delete file"
+			},
+			{
+				option: "add",
+				alias: "a",
+				description: "add file"
+			},
+			{
+				option: "config",
+				alias: "c",
+				description: "set config"
+			},
+			{
+				option: "init",
+				alias: "i",
+				value: "<kit name>",
+				description: "init starter kit name"
+			},
+			{
+				option: "random",
+				alias: "r",
+				value: "<123123123123123123>",
+				description: "123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123"
+			},
+		]);
   		
-		// expect(console.log.calledOnce).to.be(true);
-		// // expect(console.log.calledWith(msg)).to.be(true);
-		// log.restore();
-  // 	});
+		expect(console.log.calledOnce).to.be(true);
+		// expect(console.log.calledWith(msg)).to.be(true);
+		log.restore();
+  	});
 });

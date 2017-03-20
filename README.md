@@ -1,7 +1,7 @@
 ## steamer-pluginutils
 
 [![NPM Version](https://img.shields.io/npm/v/steamer-pluginutils.svg?style=flat)](https://www.npmjs.com/package/react-touch-component)
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)]()
+[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/SteamerTeam/steamer-pluginutils)
 
 [steamerjs](https://github.com/SteamerTeam/steamerjs) 便于开发 `plugin` 的 `util` 函数
 
