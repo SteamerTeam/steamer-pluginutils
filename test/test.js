@@ -248,79 +248,77 @@ describe("print message:", function() {
 		log.restore();
   	});
 
-  	it("printTitle", function() {
-  		utils.printTitle('test3', 'white');
+  // 	it("printTitle", function() {
+  // 		utils.printTitle('test3', 'white');
 
-		var str = " test3 ",
-			len = str.length,
-			maxLen = process.stdout.columns;
+		// var str = " test3 ",
+		// 	len = str.length,
+		// 	maxLen = process.stdout.columns;
 
-		var padding = "=".repeat(Math.floor((maxLen - len) / 2));
+		// var padding = "=".repeat(Math.floor((maxLen - len) / 2));
 
-		expect(console.log.calledOnce).to.be(true);
-		expect(console.log.calledWith(chalk['white'](padding + str + padding))).to.be(true);
-		log.restore();
-  	});
+		// expect(console.log.calledOnce).to.be(true);
+		// expect(console.log.calledWith(chalk['white'](padding + str + padding))).to.be(true);
+		// log.restore();
+  // 	});
 
-  	it("printEnd", function() {
-  		utils.printEnd('white');
+  // 	it("printEnd", function() {
+  // 		utils.printEnd('white');
 
-  		var maxLen = process.stdout.columns;
+  // 		var maxLen = process.stdout.columns;
 
-		expect(console.log.calledOnce).to.be(true);
-		expect(console.log.calledWith(chalk['white']("=".repeat(maxLen)))).to.be(true);
-		log.restore();
-  	});
+		// expect(console.log.calledOnce).to.be(true);
+		// expect(console.log.calledWith(chalk['white']("=".repeat(maxLen)))).to.be(true);
+		// log.restore();
+  // 	});
 
-  	it("printUsage", function() {
-  		var des = 123;
+  // 	it("printUsage", function() {
+  // 		var des = 123;
 
-  		utils.printUsage(des);
+  // 		utils.printUsage(des);
 
-  		var msg = chalk.green("\nusage: \n");
-  		msg += "steamer test3    " + des + "\n";
+  // 		var msg = chalk.green("\nusage: \n");
+  // 		msg += "steamer test3    " + des + "\n";
 
-		expect(console.log.calledOnce).to.be(true);
-		expect(console.log.calledWith(msg)).to.be(true);
-		log.restore();
-  	});
-
-  	it("printOption", function() {
-
-  		// log.restore();
-
-  		utils.printOption([
-			{
-				option: "del",
-				alias: "d",
-				description: "delete file"
-			},
-			{
-				option: "add",
-				alias: "a",
-				description: "add file"
-			},
-			{
-				option: "config",
-				alias: "c",
-				description: "set config"
-			},
-			{
-				option: "init",
-				alias: "i",
-				value: "<kit name>",
-				description: "init starter kit name"
-			},
-			{
-				option: "random",
-				alias: "r",
-				value: "<123123123123123123>",
-				description: "123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123"
-			},
-		]);
-  		
-		expect(console.log.calledOnce).to.be(true);
+		// expect(console.log.calledOnce).to.be(true);
 		// expect(console.log.calledWith(msg)).to.be(true);
-		log.restore();
-  	});
+		// log.restore();
+  // 	});
+
+  // 	it("printOption", function() {
+
+  // 		utils.printOption([
+		// 	{
+		// 		option: "del",
+		// 		alias: "d",
+		// 		description: "delete file"
+		// 	},
+		// 	{
+		// 		option: "add",
+		// 		alias: "a",
+		// 		description: "add file"
+		// 	},
+		// 	{
+		// 		option: "config",
+		// 		alias: "c",
+		// 		description: "set config"
+		// 	},
+		// 	{
+		// 		option: "init",
+		// 		alias: "i",
+		// 		value: "<kit name>",
+		// 		description: "init starter kit name"
+		// 	},
+		// 	{
+		// 		option: "random",
+		// 		alias: "r",
+		// 		value: "<123123123123123123>",
+		// 		description: "123123123123123123123123123123123123123123123123123123123123123123123123123123123123123123"
+		// 	},
+		// ]);
+  		
+		// expect(console.log.calledOnce).to.be(true);
+		// // expect(console.log.calledWith(msg)).to.be(true);
+		// log.restore();
+  // 	});
 });
