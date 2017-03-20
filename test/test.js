@@ -262,28 +262,28 @@ describe("print message:", function() {
 		// log.restore();
   // 	});
 
-  // 	it("printEnd", function() {
-  // 		utils.printEnd('white');
+  	it("printEnd", function() {
+  		utils.printEnd('white');
 
-  // 		var maxLen = process.stdout.columns;
+  		var maxLen = process.stdout.columns;
 
-		// expect(console.log.calledOnce).to.be(true);
-		// expect(console.log.calledWith(chalk['white']("=".repeat(maxLen)))).to.be(true);
-		// log.restore();
-  // 	});
+		expect(console.log.calledOnce).to.be(true);
+		expect(console.log.calledWith(chalk['white']("=".repeat(maxLen)))).to.be(true);
+		log.restore();
+  	});
 
-  // 	it("printUsage", function() {
-  // 		var des = 123;
+  	it("printUsage", function() {
+  		var des = 123;
 
-  // 		utils.printUsage(des);
+  		utils.printUsage(des);
 
-  // 		var msg = chalk.green("\nusage: \n");
-  // 		msg += "steamer test3    " + des + "\n";
+  		var msg = chalk.green("\nusage: \n");
+  		msg += "steamer test3    " + des + "\n";
 
-		// expect(console.log.calledOnce).to.be(true);
-		// expect(console.log.calledWith(msg)).to.be(true);
-		// log.restore();
-  // 	});
+		expect(console.log.calledOnce).to.be(true);
+		expect(console.log.calledWith(msg)).to.be(true);
+		log.restore();
+  	});
 
   	it("printOption", function() {
 
