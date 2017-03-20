@@ -136,7 +136,6 @@ pluginUtils.prototype.readSteamerGlobalConfig = function() {
  * create steamerjs config
  */
 pluginUtils.prototype.createSteamerConfig = function(config, options) {
-
 	var config = config || {},
 		options = options || {};
 
