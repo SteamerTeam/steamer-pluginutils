@@ -249,23 +249,17 @@ describe("print message:", function() {
   	});
 
   	it("printTitle", function() {
-  		try {
-	  		utils.printTitle('test3', 'white');
+  		utils.printTitle('test3', 'white');
 
-			var str = " test3 ",
-				len = str.length,
-				maxLen = process.stdout.columns || 84;
+		var str = " test3 ",
+			len = str.length,
+			maxLen = process.stdout.columns || 84;
 
-			var padding = "=".repeat(Math.floor((maxLen - len) / 2));
+		var padding = "=".repeat(Math.floor((maxLen - len) / 2));
 
-			console.dir(console.log.callCount);
-			// expect(console.log.calledOnce).to.be(true);
-			expect(console.log.calledWith(chalk['white'](padding + str + padding))).to.be(true);
-			log.restore();
-		}
-		catch(e) {
-			console.dir(e);
-		}
+		expect(console.log.calledOnce).to.be(true);
+		expect(console.log.calledWith(chalk['white'](padding + str + padding))).to.be(true);
+		log.restore();
   	});
 
   	it("printEnd", function() {
