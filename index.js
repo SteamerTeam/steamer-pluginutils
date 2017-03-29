@@ -39,7 +39,11 @@ pluginUtils.prototype._getGlobalHome = function() {
  */
 pluginUtils.prototype.addRequirePath = function(requirePath, targetPath) {
 	var targetPath = targetPath || require.main.paths;
-	targetPath.push(requirePath);
+
+	if (!_.includes(targetPath, requirePath)) {
+		targetPath.push(requirePath);
+	}
+
 };
 
 /**

@@ -1,9 +1,9 @@
 ## steamer-pluginutils
 
 [![NPM Version](https://img.shields.io/npm/v/steamer-pluginutils.svg?style=flat)](https://www.npmjs.com/package/steamer-pluginutils)
-[![Travis](https://img.shields.io/travis/rust-lang/rust.svg)](https://travis-ci.org/SteamerTeam/steamer-pluginutils)
+[![Travis](https://img.shields.io/travis/SteamerTeam/steamer-pluginutils.svg)](https://travis-ci.org/SteamerTeam/steamer-pluginutils)
 [![Deps](https://david-dm.org/SteamerTeam/steamer-pluginutils.svg)](https://david-dm.org/SteamerTeam/steamer-pluginutils)
-[![Coverage](https://coveralls.io/repos/github/SteamerTeam/steamer-pluginutils/badge.svg)](https://coveralls.io/github/SteamerTeam/steamer-pluginutils)
+[![Coverage](https://img.shields.io/coveralls/SteamerTeam/steamer-pluginutils.svg)](https://coveralls.io/github/SteamerTeam/steamer-pluginutils)
 
 [steamerjs](https://github.com/SteamerTeam/steamer-pluginutils) 便于开发 `plugin` 的 `util` 函数
 
