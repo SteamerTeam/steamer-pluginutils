@@ -1,4 +1,4 @@
-## 1.2.3
+## 1.2.4
 	- compatible with window shell
 
 ## 1.2.2
