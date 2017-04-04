@@ -4,8 +4,8 @@ const os = require('os'),
 	  path = require('path'),
 	  fs = require('fs-extra'),
 	  chalk = require('chalk'),
-	  _ = require('lodash');
-
+	  _ = require('lodash'),
+	  spawnSync = require('child_process').spawnSync;
 
 function pluginUtils(pluginName) {
 
@@ -21,7 +21,8 @@ function pluginUtils(pluginName) {
 	this.globalHome = this._getGlobalHome();
 
 	// global node module path
-	this.globalNodeModules = process.env.NODE_PATH || '';
+	var ps = spawnSync("npm", ["root", "-g"]);
+	this.globalNodeModules = process.env.NODE_PATH || ps.stdout.toString() || '';
 }
 
 /**
