@@ -21,7 +21,7 @@ function pluginUtils(pluginName) {
 	this.globalHome = this._getGlobalHome();
 
 	// global node module path
-	var ps = spawnSync("npm", ["root", "-g"]);
+	var ps = spawnSync("npm", ["root", "-g"], {shell: true});
 	this.globalNodeModules = process.env.NODE_PATH || ps.stdout.toString() || '';
 }
 
