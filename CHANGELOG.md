@@ -1,3 +1,8 @@
+## 1.2.5
+	- fix require cache issue
+	- try to boost perf by wrapping `npm root -g` in a function
+
+
 ## 1.2.4
 	- compatible with window shell
 

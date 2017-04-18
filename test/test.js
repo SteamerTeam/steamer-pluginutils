@@ -322,3 +322,16 @@ describe("print message:", function() {
 		log.restore();
   	});
 });
+
+describe("NODE_PATH", function() {
+	it("npm root -g", function() {
+		let NODE_PATH = process.env.NODE_PATH;
+		process.env.NODE_PATH = '';
+
+		var utils = new pluginUtils();
+
+    	expect(utils.globalNodeModules).not.to.be(null);
+  		
+  		process.env.NODE_PATH = NODE_PATH;
+  	});
+});

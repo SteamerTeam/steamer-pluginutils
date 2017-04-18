@@ -87,6 +87,7 @@
 	- read steamerjs global or local config
 	- Parameters
 		- `isGlobal`, is the config global or local, default: `false`
+		- `overwrite`, `Boolean`, 是否覆盖已经存在的配置文件
 	- Return 
 		- `config`, config object
 

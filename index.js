@@ -20,12 +20,20 @@ function pluginUtils(pluginName) {
 	// global home directory, usually for global config
 	this.globalHome = this._getGlobalHome();
 
+	this.globalNodeModules = process.env.NODE_PATH || this._getNodePath() || '';
+}
+
+/**
+ * get NODE_PATH
+ * @return {String} [NODE_PATH]
+ */
+pluginUtils.prototype._getNodePath = function() {
 	// global node module path
 	var ps = spawnSync("npm", ["root", "-g"], {shell: true}),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
-	this.globalNodeModules = process.env.NODE_PATH || npmRoot || '';
-}
+	return npmRoot;
+};
 
 /**
  * get home directory
@@ -180,6 +188,7 @@ pluginUtils.prototype._readFile = function(filepath) {
 
 	try {
 		if (isJs) {
+			delete require.cache[filepath];
 			config = require(filepath) || {};
 		}
 		else {
