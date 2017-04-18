@@ -188,7 +188,11 @@ pluginUtils.prototype._readFile = function(filepath) {
 
 	try {
 		if (isJs) {
-			delete require.cache[filepath];
+			
+			if (require.cache[filepath]) {
+				delete require.cache[filepath];
+			}
+
 			config = require(filepath) || {};
 		}
 		else {
