@@ -29,7 +29,7 @@ function pluginUtils(pluginName) {
  */
 pluginUtils.prototype._getNodePath = function() {
 	// global node module path
-	var ps = spawnSync("npm", ["root", "-g"], {shell: true}),
+	var ps = spawnSync("npm", ["root", "-g"], {shell: true, stdio: 'inherit'}),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
 	return npmRoot;

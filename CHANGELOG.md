@@ -1,3 +1,6 @@
+## 1.2.7
+	- try to fix spawn hang in windows
+
 ## 1.2.6
 	- fix require cache issue
 	- try to boost perf by wrapping `npm root -g` in a function
