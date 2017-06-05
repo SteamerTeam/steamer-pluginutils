@@ -5,7 +5,8 @@ const os = require('os'),
 	  fs = require('fs-extra'),
 	  chalk = require('chalk'),
 	  _ = require('lodash'),
-	  spawnSync = require('child_process').spawnSync;
+	  spawn = require('cross-spawn');
+	  // spawnSync = require('child_process').spawnSync;
 
 function pluginUtils(pluginName) {
 
@@ -19,7 +20,7 @@ function pluginUtils(pluginName) {
 
 	// global home directory, usually for global config
 	this.globalHome = this._getGlobalHome();
-
+	
 	this.globalNodeModules = process.env.NODE_PATH || this._getNodePath() || '';
 }
 
@@ -29,7 +30,7 @@ function pluginUtils(pluginName) {
  */
 pluginUtils.prototype._getNodePath = function() {
 	// global node module path
-	var ps = spawnSync("npm", ["root", "-g"], {shell: true, stdio: 'inherit'}),
+	var ps = spawn.sync('npm', ['root', '-g'], {  }),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
 	return npmRoot;
