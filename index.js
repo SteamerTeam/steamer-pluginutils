@@ -32,10 +32,6 @@ pluginUtils.prototype._getNodePath = function() {
 	var ps = spawnSync("npm", ["root", "-g"], {shell: true}),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
-	if (!npmRoot) {
-		throw new Error("NODE_PATH is not set right");
-	}
-
 	return npmRoot;
 };
 
