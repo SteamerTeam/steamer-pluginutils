@@ -1,4 +1,4 @@
-## 1.2.9
+## 1.2.10
 	- try to fix spawn hang in windows
 
 ## 1.2.6

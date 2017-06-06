@@ -21,7 +21,7 @@ function pluginUtils(pluginName) {
 	// global home directory, usually for global config
 	this.globalHome = this._getGlobalHome();
 	
-	this.globalNodeModules = process.env.NODE_PATH || this._getNodePath() || '';
+	this.globalNodeModules = process.env.NODE_PATH || '';
 }
 
 /**
