@@ -21,7 +21,7 @@ function pluginUtils(pluginName) {
 	// global home directory, usually for global config
 	this.globalHome = this._getGlobalHome();
 	
-	this.globalNodeModules = process.env.NODE_PATH || '';
+	this.globalNodeModules = process.env.NODE_PATH || this._getNodePath() || '';
 }
 
 /**
@@ -30,8 +30,7 @@ function pluginUtils(pluginName) {
  */
 pluginUtils.prototype._getNodePath = function() {
 	// global node module path
-	this.warn("you are using 'npm root -g' output as NODE_PATH. \nPlease set NODE_PATH as soon as possible");
-	var ps = spawn.sync('npm', ['root', '-g'], {stdio: 'inherit'}),
+	var ps = spawn.sync('npm', ['root', '-g'], {}),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
 	return npmRoot;
