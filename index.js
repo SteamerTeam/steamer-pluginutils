@@ -30,7 +30,8 @@ function pluginUtils(pluginName) {
  */
 pluginUtils.prototype._getNodePath = function() {
 	// global node module path
-	var ps = spawn.sync('npm', ['root', '-g'], {  }),
+	this.warn("you are using 'npm root -g' output as NODE_PATH. \nPlease set NODE_PATH as soon as possible");
+	var ps = spawn.sync('npm', ['root', '-g'], {stdio: 'inherit'}),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
 	return npmRoot;
