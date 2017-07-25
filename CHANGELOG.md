@@ -1,7 +1,7 @@
-## 1.2.9
-	- expose chalk
+## 1.2.11
+	- expose fs and chalk
 
-## 1.2.8
+## 1.2.10
 	- try to fix spawn hang in windows
 
 ## 1.2.6

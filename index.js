@@ -30,7 +30,7 @@ function pluginUtils(pluginName) {
  */
 pluginUtils.prototype._getNodePath = function() {
 	// global node module path
-	var ps = spawn.sync('npm', ['root', '-g'], {  }),
+	var ps = spawn.sync('npm', ['root', '-g'], {}),
 		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
 
 	return npmRoot;
@@ -393,5 +393,8 @@ pluginUtils.prototype.log = function(str, color) {
 	console.log(msg);
 	return msg;
 };
+
+pluginUtils.prototype.fs = fs;
+pluginUtils.prototype.chalk = chalk;
 
 module.exports = pluginUtils;

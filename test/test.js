@@ -17,11 +17,15 @@ before(function() {
 
 after(function() {
 	process.chdir('..');
-	fs.removeSync(TEMP);
+	setTimeout(() => {
+		fs.removeSync(TEMP);
+	}, 100)
 });
 
 describe("addRequirePath", function() {
 	it("test require success", function() {
+
+		this.timeout(3000);
 
 		var utils = new pluginUtils(),
 			requrePath = path.resolve();
@@ -47,6 +51,9 @@ describe("createConfig & readConfig:", function() {
 	// });
 
 	it("createConfig without option", function() {
+		
+		this.timeout(3000);
+
 		var utils = new pluginUtils("steamer-plugin-" + now);
 
 		utils.createConfig({
@@ -62,6 +69,9 @@ describe("createConfig & readConfig:", function() {
   	});
 
 	it("createConfig config in existing file", function() {
+
+		this.timeout(3000);
+
 		var utils = new pluginUtils("steamer-plugin-test1");
 
 		fs.ensureFileSync('.steamer/steamer-plugin-test1.js');
@@ -74,6 +84,9 @@ describe("createConfig & readConfig:", function() {
   	});
 
   	it("createConfig config with option", function() {
+
+  		this.timeout(3000);
+
   		var utils = new pluginUtils("test2");
 
   		var configFile = '.steamer/test2.json';
@@ -98,6 +111,9 @@ describe("createConfig & readConfig:", function() {
   	});
 
   	it("read local config without option", function() {
+
+  		this.timeout(3000);
+
   		var utils = new pluginUtils("steamer-plugin-" + now);
 
 		var config = utils.readConfig();
@@ -106,6 +122,9 @@ describe("createConfig & readConfig:", function() {
   	});
 
   	it("read local config with option", function() {
+
+  		this.timeout(3000);
+
   		var utils = new pluginUtils("steamer-plugin-" + now);
 
 		var config = utils.readConfig({
@@ -117,6 +136,9 @@ describe("createConfig & readConfig:", function() {
   	});
 
   	it("create and read global config", function() {
+
+  		this.timeout(3000);
+
   		var sandbox = sinon.sandbox.create();
 
   		var utils = new pluginUtils("steamer-plugin-test3");
@@ -147,6 +169,9 @@ describe("createConfig & readConfig:", function() {
   	});
 
   	it("create and read steamer config", function() {
+
+  		this.timeout(3000);
+
   		var sandbox = sinon.sandbox.create();
 
   		var utils = new pluginUtils("steamer-plugin-test3");
@@ -175,6 +200,8 @@ describe("createConfig & readConfig:", function() {
   	});
 
   	it("create config in existing file", function() {
+  		this.timeout(3000);
+
   		var sandbox = sinon.sandbox.create();
 
   		var utils = new pluginUtils("steamer-plugin-test4");
@@ -325,6 +352,9 @@ describe("print message:", function() {
 
 describe("NODE_PATH", function() {
 	it("npm root -g", function() {
+		
+		this.timeout(3000);
+
 		let NODE_PATH = process.env.NODE_PATH;
 		process.env.NODE_PATH = '';
 
