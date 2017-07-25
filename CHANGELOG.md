@@ -1,3 +1,6 @@
+## 1.2.9
+	- expose chalk
+
 ## 1.2.8
 	- try to fix spawn hang in windows
 
