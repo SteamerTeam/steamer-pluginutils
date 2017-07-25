@@ -159,6 +159,9 @@ options:
     --help                        123
 ```
 
+#### 外部库
+	- fs ([fs-extra](https://github.com/jprichardson/node-fs-extra))
+	- chalk ([chalk](https://github.com/chalk/chalk))
 
 
 ### 开发及测试
