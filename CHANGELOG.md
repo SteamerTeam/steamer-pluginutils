@@ -1,3 +1,6 @@
+## 1.2.12
+	- improve how to get globalNodeModules
+
 ## 1.2.11
 	- expose fs and chalk
 
