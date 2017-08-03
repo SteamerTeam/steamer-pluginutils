@@ -39,11 +39,14 @@ pluginUtils.prototype._getNodePath = function() {
 		return globalModules;
 	}
 
-	// global node module path
-	var ps = spawn.sync('npm', ['root', '-g'], {}),
-		npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
+	// No Longer Support Compatible Mode
+	return null;
 
-	return npmRoot;
+	// global node module path
+	// var ps = spawn.sync('npm', ['root', '-g'], {}),
+	// 	npmRoot = (ps && ps.stdout) ? ps.stdout.toString().replace(/[\n\t\r]/g,"") : "";
+
+	// return npmRoot;
 };
 
 /**

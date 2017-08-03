@@ -1,3 +1,6 @@
+# 1.3.0
+    - no longer use npm root -g to fix issue if NODE_PATH is not set
+
 ## 1.2.12
 	- improve how to get globalNodeModules
 
