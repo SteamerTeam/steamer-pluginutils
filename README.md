@@ -1,5 +1,8 @@
 ## steamer-pluginutils
 
+### 即将过时
+本项目即将过时，插件开发后续主要使用 [steamer-plugin](https://github.com/steamerjs/steamer-plugin) 作为基类开发。
+
 [![NPM Version](https://img.shields.io/npm/v/steamer-pluginutils.svg?style=flat)](https://www.npmjs.com/package/steamer-pluginutils)
 [![Travis](https://img.shields.io/travis/steamerjs/steamer-pluginutils.svg)](https://travis-ci.org/steamerjs/steamer-pluginutils)
 [![Deps](https://david-dm.org/steamerjs/steamer-pluginutils.svg)](https://david-dm.org/steamerjs/steamer-pluginutils)
